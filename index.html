@@ -3,14 +3,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <title>YouTube検索</title>
-<style>
-body{background:#111;color:#fff;font-family:sans-serif;text-align:center}
-input,button{font-size:1rem;padding:6px;border:none;border-radius:4px;margin:4px}
-input{width:80vw;max-width:400px}
-button{background:#c00;color:#fff;cursor:pointer}
-button:hover{background:#f33}
-iframe{width:90vw;max-width:560px;aspect-ratio:16/9;border:none;border-radius:8px;display:block;margin:10px auto}
-</style>
 <h1>YouTube検索</h1>
 <input id="query" placeholder="検索ワードを入力">
 <button onclick="search()">検索</button>
@@ -30,9 +22,10 @@ function search(){
     res.innerHTML="";
     d.items.forEach(it=>{
       if(!it.id.videoId)return;
-      res.innerHTML+=`<h3>${it.snippet.title}</h3><iframe src="https://www.youtube.com/embed/${it.id.videoId}" allowfullscreen></iframe>`;
+      res.innerHTML+=`<h3>${it.snippet.title}</h3><iframe width="560" height="315" src="https://www.youtube.com/embed/${it.id.videoId}" allowfullscreen></iframe>`;
     });
   })
   .catch(e=>alert("エラー: "+e));
 }
 </script>
+
