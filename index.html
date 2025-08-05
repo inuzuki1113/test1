@@ -1,92 +1,38 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width" />
-  <title>YouTube検索（軽量版）</title>
-  <style>
-    body {
-      background: #111;
-      color: #fff;
-      font-family: sans-serif;
-      margin: 10px;
-      text-align: center;
-    }
-    input, button {
-      font-size: 1rem;
-      padding: 8px;
-      border: none;
-      border-radius: 4px;
-      margin: 4px 0;
-    }
-    input {
-      width: 80vw;
-      max-width: 400px;
-    }
-    button {
-      background: #cc0000;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #ff3333;
-    }
-    .video {
-      max-width: 560px;
-      width: 90vw;
-      margin: 20px auto; /* 中央寄せ */
-    }
-    iframe {
-      width: 100%;
-      aspect-ratio: 16 / 9; /* アスペクト比を維持して中央寄せ */
-      border: none;
-      border-radius: 8px;
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <h1>YouTube検索</h1>
-  <input type="text" id="query" placeholder="検索ワードを入力" />
-  <button onclick="search()">検索</button>
-  <div id="results"></div>
-
-  <script>
-    const API_KEY = "AIzaSyDnBoaP5dygiMotDopdVGzzFyctc_eBSXU";
-
-    document.getElementById("query").addEventListener("keydown", function(e){
-      if(e.key === "Enter"){
-        e.preventDefault();
-        search();
-      }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>YouTube検索</title>
+<style>
+body{background:#111;color:#fff;font-family:sans-serif;text-align:center}
+input,button{font-size:1rem;padding:6px;border:none;border-radius:4px;margin:4px}
+input{width:80vw;max-width:400px}
+button{background:#c00;color:#fff;cursor:pointer}
+button:hover{background:#f33}
+iframe{width:90vw;max-width:560px;aspect-ratio:16/9;border:none;border-radius:8px;display:block;margin:10px auto}
+</style>
+<h1>YouTube検索</h1>
+<input id="query" placeholder="検索ワードを入力">
+<button onclick="search()">検索</button>
+<div id="results"></div>
+<script>
+const API_KEY="AIzaSyDnBoaP5dygiMotDopdVGzzFyctc_eBSXU";
+document.getElementById("query").addEventListener("keydown",e=>{
+  if(e.key==="Enter")search();
+});
+function search(){
+  const q=document.getElementById("query").value.trim();
+  if(!q)return alert("検索ワードを入力してください！");
+  fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${encodeURIComponent(q)}&key=${API_KEY}`)
+  .then(r=>r.json())
+  .then(d=>{
+    const res=document.getElementById("results");
+    res.innerHTML="";
+    d.items.forEach(it=>{
+      if(!it.id.videoId)return;
+      res.innerHTML+=`<h3>${it.snippet.title}</h3><iframe src="https://www.youtube.com/embed/${it.id.videoId}" allowfullscreen></iframe>`;
     });
-
-    function search(){
-      const query = document.getElementById("query").value.trim();
-      if(!query){
-        alert("検索ワードを入力してください！");
-        return;
-      }
-      const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=10&q=${encodeURIComponent(query)}&key=${API_KEY}`;
-      fetch(url)
-        .then(r => r.json())
-        .then(data => {
-          const resultsDiv = document.getElementById("results");
-          resultsDiv.innerHTML = "";
-          data.items.forEach(item => {
-            const videoId = item.id.videoId;
-            if(!videoId) return;
-            const title = item.snippet.title;
-            resultsDiv.innerHTML += `
-              <div class="video">
-                <h3>${title}</h3>
-                <iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe>
-              </div>
-            `;
-          });
-        })
-        .catch(err => alert("エラー: " + err));
-    }
-  </script>
-</body>
-</html>
+  })
+  .catch(e=>alert("エラー: "+e));
+}
+</script>
