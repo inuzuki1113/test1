@@ -132,10 +132,10 @@ function showVideo(videoId, container){
 // 動画を閉じて広告を表示
 function closeVideo(){
   const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "";
-  
+  resultsDiv.innerHTML = "";  // 検索結果をクリア
+
   const adsDiv = document.getElementById("ads");
-  if(adsDiv) adsDiv.style.display = "block";
+  if(adsDiv) adsDiv.style.display = "block";  // 広告表示
 }
 </script>
 
