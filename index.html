@@ -1,88 +1,5 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>力学的エネルギー保存の法則について大学教授が調べてみたブログ。</title>
-
-<style>
-  body { font-family: Arial,sans-serif; background:#111; color:#fff; margin:10px; text-align:center;}
-  input, button { font-size:1rem; padding:8px; border-radius:4px; border:none; }
-  input { width: 80%; max-width:400px; }
-  button { background:#cc0000; color:#fff; cursor:pointer; }
-  button:hover { background:#ff3333; }
-  .video {
-    margin:20px auto;
-    max-width:560px;
-    width:90vw;
-    cursor: pointer;
-  }
-  .video img {
-    border-radius:8px;
-    width: 120px;
-    height: 90px;
-    object-fit: cover;
-    vertical-align: middle;
-  }
-  .video h3 {
-    display: inline-block;
-    max-width: 400px;
-    text-align: left;
-    font-size: 1rem;
-    margin-left: 10px;
-    vertical-align: middle;
-    color: #eee;
-  }
-  iframe {
-    width: 100%;
-    height: 315px;
-    border-radius: 6px;
-    border: none;
-  }
-  @media(max-width:400px) {
-    iframe { height: 200px; }
-  }
-
-  /* 広告横並び */
-  .ad-container {
-    margin: 20px auto;
-    max-width: 560px;
-    display: flex;
-    justify-content: center;
-    gap: 10px; /* 広告間の隙間 */
-    flex-wrap: wrap; /* 小さい画面では折り返す */
-  }
-  .ad-container a img {
-    width: 300px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 6px;
-  }
-</style>
-</head>
-<body>
-
-<h1>YouTube検索</h1>
-
-<!-- Profitableratecpm 広告 横並び -->
-<div id="ads" class="ad-container">
-  <a href="https://www.profitableratecpm.com/bikgv3c2sn?key=1b87818120ab11328ec1f1560772c06c" target="_blank">
-    <img src="https://via.placeholder.com/300x250?text=広告1" alt="広告1">
-  </a>
-  <a href="https://www.profitableratecpm.com/bikgv3c2sn?key=1b87818120ab11328ec1f1560772c06c" target="_blank">
-    <img src="https://via.placeholder.com/300x250?text=広告2" alt="広告2">
-  </a>
-  <a href="https://www.profitableratecpm.com/bikgv3c2sn?key=1b87818120ab11328ec1f1560772c06c" target="_blank">
-    <img src="https://via.placeholder.com/300x250?text=広告3" alt="広告3">
-  </a>
-</div>
-
-<input id="query" placeholder="検索ワード" onkeydown="if(event.key==='Enter'){search();}" />
-<button onclick="search()">検索</button>
-<div id="results"></div>
-
 <script>
-const API_KEY = "AIzaSyDnBoaP5dygiMotDopdVGzzFyctc_eBSXU";
+const API_KEY = "AIzaSyAzoo-t5D3edI-Bi6LKPHwq_718XXr4dZk";
 
 function escapeHtml(t){
   return t.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -122,9 +39,8 @@ function search(){
 
 // 動画再生処理
 function showVideo(videoId, container){
-  // 広告非表示
   const adsDiv = document.getElementById("ads");
-  if(adsDiv) adsDiv.style.display = "none";
+  if(adsDiv) adsDiv.style.display = "none"; // 広告非表示
 
   container.innerHTML = `
     <iframe
@@ -142,9 +58,6 @@ function closeVideo(){
   resultsDiv.innerHTML = ""; // 検索結果クリア
 
   const adsDiv = document.getElementById("ads");
-  if(adsDiv) adsDiv.style.display = "flex"; // 横並びで表示
+  if(adsDiv) adsDiv.style.display = "flex"; // 横並びで再表示
 }
 </script>
-
-</body>
-</html>
