@@ -1,63 +1,95 @@
-<script>
-const API_KEY = "AIzaSyAzoo-t5D3edI-Bi6LKPHwq_718XXr4dZk";
-
-function escapeHtml(t){
-  return t.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-
-// 検索処理
-function search(){
-  closeVideo(); // 動画を閉じて広告表示
-
-  const q = document.getElementById("query").value.trim();
-  if(!q){ alert("検索ワードを入力してください"); return; }
-
-  fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=15&q=${encodeURIComponent(q)}&key=${API_KEY}`)
-  .then(res => res.json())
-  .then(data => {
-    const resultsDiv = document.getElementById("results");
-    if(!data.items || data.items.length === 0){
-      resultsDiv.innerHTML = "<p>検索結果がありません。</p>";
-      return;
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube検索テスト</title>
+  <style>
+    #results .video {
+      display: flex;
+      align-items: center;
+      margin: 8px;
+      cursor: pointer;
     }
-    let html = "";
-    data.items.forEach(item => {
-      const videoId = item.id.videoId;
-      const title = escapeHtml(item.snippet.title);
-      const thumb = item.snippet.thumbnails.default.url; 
-      html += `
-        <div class="video" onclick="showVideo('${videoId}', this)" tabindex="0" role="button" aria-pressed="false">
-          <img src="${thumb}" alt="${title}" loading="lazy" width="120" height="90" />
-          <h3>${title}</h3>
-        </div>
+    #results img {
+      margin-right: 8px;
+    }
+    #ads {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>YouTube検索</h1>
+  <input type="text" id="query" placeholder="動画を検索">
+  <button onclick="search()">検索</button>
+
+  <!-- 広告エリア -->
+  <div id="ads">ここに広告を表示できます</div>
+
+  <!-- 検索結果エリア -->
+  <div id="results"></div>
+
+  <script>
+    const API_KEY = "AIzaSyAzoo-t5D3edI-Bi6LKPHwq_718XXr4dZk";
+
+    function escapeHtml(t){
+      return t.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+
+    function search(){
+      closeVideo(); 
+      const q = document.getElementById("query").value.trim();
+      if(!q){ alert("検索ワードを入力してください"); return; }
+
+      fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=15&q=${encodeURIComponent(q)}&key=${API_KEY}`)
+      .then(res => res.json())
+      .then(data => {
+        const resultsDiv = document.getElementById("results");
+        if(!data.items || data.items.length === 0){
+          resultsDiv.innerHTML = "<p>検索結果がありません。</p>";
+          return;
+        }
+        let html = "";
+        data.items.forEach(item => {
+          const videoId = item.id.videoId;
+          const title = escapeHtml(item.snippet.title);
+          const thumb = item.snippet.thumbnails.default.url; 
+          html += `
+            <div class="video" onclick="showVideo('${videoId}', this)" tabindex="0" role="button">
+              <img src="${thumb}" alt="${title}" width="120" height="90" />
+              <h3>${title}</h3>
+            </div>
+          `;
+        });
+        resultsDiv.innerHTML = html;
+      })
+      .catch(err => alert("エラー: " + err));
+    }
+
+    function showVideo(videoId, container){
+      const adsDiv = document.getElementById("ads");
+      if(adsDiv) adsDiv.style.display = "none"; 
+
+      container.innerHTML = `
+        <iframe
+          width="560" height="315"
+          src="https://www.youtube.com/embed/${videoId}"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       `;
-    });
-    resultsDiv.innerHTML = html;
-  })
-  .catch(err => alert("エラー: " + err));
-}
+    }
 
-// 動画再生処理
-function showVideo(videoId, container){
-  const adsDiv = document.getElementById("ads");
-  if(adsDiv) adsDiv.style.display = "none"; // 広告非表示
-
-  container.innerHTML = `
-    <iframe
-      src="https://www.youtube.com/embed/${videoId}"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      title="YouTube動画プレイヤー"
-    ></iframe>
-  `;
-}
-
-// 動画を閉じて広告を表示
-function closeVideo(){
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = ""; // 検索結果クリア
-
-  const adsDiv = document.getElementById("ads");
-  if(adsDiv) adsDiv.style.display = "flex"; // 横並びで再表示
-}
-</script>
+    function closeVideo(){
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = ""; 
+      const adsDiv = document.getElementById("ads");
+      if(adsDiv) adsDiv.style.display = "flex"; 
+    }
+  </script>
+</body>
+</html>
