@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>YouTube検索テスト</title>
-  <style>
-    #results .video {
-      display: flex;
-      align-items: center;
-      margin: 8px;
-      cursor: pointer;
-    }
-    #results img {
-      margin-right: 8px;
-    }
-    #ads {
-      display: flex;
-      justify-content: center;
-      margin: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
-    }
-  </style>
-</head>
 <body>
+  <!-- AdMax 広告（画面上部固定） -->
+  <div id="admax-top" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 999; background: #fff; text-align: center; padding: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <!-- admax -->
+    <script src="https://adm.shinobi.jp/s/f0cf829b70a579d58e1c9c3256be59a6"></script>
+    <!-- admax -->
+  </div>
+
+  <!-- コンテンツを下にずらすための余白 -->
+  <div style="height:80px;"></div>
+
   <h1>YouTube検索</h1>
   <input type="text" id="query" placeholder="動画を検索">
   <button onclick="search()">検索</button>
@@ -92,4 +78,3 @@
     }
   </script>
 </body>
-</html>
